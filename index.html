@@ -74,15 +74,15 @@
                     <h2>Novo Cliente</h2>
                     <span class="modal-fechar" id="modalFechar">&#10006;</span>
                 </header>
-                <form class="modal-form">
-                    <input type="text" class="modal-field" placeholder="Nome do Cliente">
-                    <input type="email" class="modal-field" placeholder="e-mail do Cliente">
-                    <input type="text" class="modal-field" placeholder="Celular do Cliente">
-                    <input type="text" class="modal-field" placeholder="Cidade do Cliente">
+                <form class="modal-form" id="formulario">
+                    <input type="text" class="modal-field" placeholder="Nome do Cliente" id="nome" required>
+                    <input type="email" class="modal-field" placeholder="e-mail do Cliente" id="email" required>
+                    <input type="text" class="modal-field" placeholder="Celular do Cliente" id="telefone" required>
+                    <input type="text" class="modal-field" placeholder="Cidade do Cliente" id="cidade" required>
                 </form>
                 <footer class="modal-footer">
-                    <button class="button green">Salvar</button>
-                    <button class="button blue">Cancelar</button>
+                    <button class="button green" id="salvar">Salvar</button>
+                    <button class="button blue" id="cancelar">Cancelar</button>
                 </footer>
             </div>
         </div>
