@@ -47,6 +47,8 @@ const camposValidos = () =>{
 const limparCampos = () => {
     const campos = document.querySelectorAll('.modal-field')
     campos.forEach(campo => campo.value = "");
+    document.getElementById('nome').dataset.indice = 'novo'
+    document.querySelector(".modal-header>h2").textContent  = 'Novo Cliente'
 }
 
 const salvarCliente = () =>{
