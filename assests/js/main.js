@@ -6,15 +6,11 @@ const fecharModal = () => {
     document.getElementById('modal').classList.remove('active');
 }
 
-const tempCliente ={
-    nome: "joão",
-    email: "J@gmail.com",
-    celular: "(71) 9 9999-9999",
-    cidade: "São Paulo"
-}
-
 const getLocalStorage = () => JSON.parse(localStorage.getItem('dbCliente')) ?? [];
+
 const setLocalStorage = (dbCliente) => localStorage.setItem("dbCliente", JSON.stringify(dbCliente));
+
+
 
 //CRUD - DELETE
 const removerCliente = (index) =>{
@@ -30,7 +26,6 @@ const updateCliente = (index, cliente) =>{
     setLocalStorage(dbCliente);
 }
 
-
 //CRUD - READ
 const lerCliente = () => getLocalStorage();
 
@@ -40,6 +35,7 @@ const criarCliente = (cliente) => {
     dbCliente.push (cliente)
     setLocalStorage(dbCliente);
 } 
+
 
 //Validando campos do formulário
 const camposValidos = () =>{
@@ -63,10 +59,66 @@ const salvarCliente = () =>{
         }
 
         criarCliente(cliente)
+        atualizarTabela();
         fecharModal();
         
     }
 }
+
+
+const criarLinha = (cliente, indice) => {
+    const novaLinha = document.createElement('tr')
+    novaLinha.innerHTML = `
+    <td>${cliente.nome}</td>
+    <td>${cliente.email}</td>
+    <td>${cliente.telefone}</td>
+    <td>${cliente.cidade}</td>
+    <td>
+        <button type="button" class="button green" id="editar-${indice}">Editar</button>
+        <button type="button" class="button red" id="deletar-${indice}">Excluir</button>
+    </td>
+    `
+    document.querySelector('#tbCliente>tbody').appendChild(novaLinha);
+}
+
+const limparTabela = () => {
+    const linhas = document.querySelectorAll('#tbCliente>tbody tr')
+    linhas.forEach(linha => linha.parentNode.removeChild(linha));
+}
+
+const atualizarTabela = () => {
+    const dbCliente = lerCliente();
+    limparTabela();
+    dbCliente.forEach(criarLinha);
+}
+
+const preencherCampos = (cliente) => {
+    document.getElementById('nome').value = cliente.nome;
+    document.getElementById('email').value = cliente.email;
+    document.getElementById('telefone').value = cliente.telefone;
+    document.getElementById('cidade').value = cliente.cidade;
+}
+
+const editarCliente = (indice) => {
+    const cliente = lerCliente()[indice]
+    preencherCampos(cliente);
+    abrirModal();
+}
+
+const editarDeletar = (event) => {
+    if (event.target.type == 'button'){
+
+        const [action, indice] = event.target.id.split('-');
+
+        if (action == 'editar') {
+            editarCliente(indice)
+        } else {
+            console.log('Deletando o cliente')
+        }
+    }
+    
+}
+
 
 //Eventos    
 document.getElementById('cadastrarCliente')
@@ -77,3 +129,6 @@ document.getElementById('modalFechar')
 
 document.getElementById('salvar')
     .addEventListener('click', salvarCliente)
+
+document.querySelector('#tbCliente>tbody')
+    .addEventListener('click', editarDeletar)
