@@ -1,8 +1,10 @@
-const openModal = () => document.getElementById('modal')
+const abrirModal = () => document.getElementById('modal')
     .classList.add('active');
 
-const closeModal = () => document.getElementById('modal')
-    .classList.remove('active');
+const fecharModal = () => {
+    limparCampos();
+    document.getElementById('modal').classList.remove('active');
+}
 
 const tempCliente ={
     nome: "joão",
@@ -45,6 +47,12 @@ const camposValidos = () =>{
 }
 
 //Interação com o Layout
+
+const limparCampos = () => {
+    const campos = document.querySelectorAll('.modal-field')
+    campos.forEach(campo => campo.value = "");
+}
+
 const salvarCliente = () =>{
     if (camposValidos()) {
         const cliente = {
@@ -55,16 +63,17 @@ const salvarCliente = () =>{
         }
 
         criarCliente(cliente)
-        alert("Cliente cadastrado com sucesso!");
+        fecharModal();
+        
     }
 }
 
 //Eventos    
 document.getElementById('cadastrarCliente')
-    .addEventListener('click', openModal)
+    .addEventListener('click', abrirModal)
 
 document.getElementById('modalFechar')
-    .addEventListener('click', closeModal)
+    .addEventListener('click', fecharModal)
 
 document.getElementById('salvar')
     .addEventListener('click', salvarCliente)
