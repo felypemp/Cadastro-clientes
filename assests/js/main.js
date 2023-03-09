@@ -57,11 +57,16 @@ const salvarCliente = () =>{
             telefone: document.getElementById('telefone').value,
             cidade: document.getElementById('cidade').value,
         }
-
-        criarCliente(cliente)
-        atualizarTabela();
-        fecharModal();
-        
+        const indice = document.getElementById('nome').dataset.indice
+        if (indice == 'novo'){
+            criarCliente(cliente)
+            atualizarTabela();
+            fecharModal();
+        } else {
+            updateCliente(indice, cliente)
+            atualizarTabela()
+            fecharModal()
+        }
     }
 }
 
@@ -97,11 +102,14 @@ const preencherCampos = (cliente) => {
     document.getElementById('email').value = cliente.email;
     document.getElementById('telefone').value = cliente.telefone;
     document.getElementById('cidade').value = cliente.cidade;
+    document.getElementById('nome').dataset.indice = cliente.indice;
 }
 
 const editarCliente = (indice) => {
     const cliente = lerCliente()[indice]
+    cliente.indice = indice;
     preencherCampos(cliente);
+    document.querySelector(".modal-header>h2").textContent  = `Editando ${cliente.nome}`
     abrirModal();
 }
 
@@ -113,7 +121,13 @@ const editarDeletar = (event) => {
         if (action == 'editar') {
             editarCliente(indice)
         } else {
-            console.log('Deletando o cliente')
+            const cliente = lerCliente()[indice]
+            const respostaCliente = confirm(`Deseja realmente excluir o cliente ${cliente.nome}`)
+            if (respostaCliente){
+                removerCliente(indice)
+                atualizarTabela();
+            }
+            
         }
     }
     
@@ -132,3 +146,6 @@ document.getElementById('salvar')
 
 document.querySelector('#tbCliente>tbody')
     .addEventListener('click', editarDeletar)
+
+    document.getElementById('cancelar')
+    .addEventListener('click', fecharModal)
